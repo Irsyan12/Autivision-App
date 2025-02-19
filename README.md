@@ -1,16 +1,77 @@
-# autivision_v2
+# Autism Detection App
 
-A new Flutter project.
+![Logo](assets/images/logoPutih.png)
+
+## Overview
+
+Autism Detection App is an open-source Flutter application designed to classify images of children as either autistic or non-autistic using a pre-trained TensorFlow Lite model based on MobileNet-v2. This application also features user authentication and a history page to keep track of previous classifications.
+
+## Features
+
+- **User Authentication**: Secure login and registration functionality.
+- **Image Upload**: Upload images directly from the gallery or capture them using the camera.
+- **Image Classification**: Classify images into autistic or non-autistic categories.
+- **History Page**: View and manage the history of classified images.
+
+## Screenshots
+
+### Main Screen
+
+<img src="screenshots/main_screen.png" alt="Main Screen" width="150">
+
+### Upload Image
+
+<img src="screenshots/upload_image.png" alt="Upload Image" width="150">
+
+### Classification Result
+
+<img src="screenshots/classification_result.png" alt="Classification Result" width="150">
+
+### History
+
+<img src="screenshots/history.png" alt="History" width="150">
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter SDK: [Install Flutter](https://flutter.dev/docs/get-started/install)
+- Firebase Account: [Set up Firebase](https://firebase.google.com/)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Clone the repository**:
+
+   ```bash
+   https://github.com/Autivision/Application.git
+   cd AutiVision
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   flutter pub get
+   ```
+
+3. **Set up Firebase**:
+
+   - Create a new project in Firebase.
+   - Add an Android app to your Firebase project.
+   - Download the `google-services.json` file and place it in the `android/app` directory.
+   - Enable Firebase Authentication in the Firebase console.
+
+4. **Run the application**:
+   ```bash
+   flutter run
+   ```
+
+## Usage
+
+1. **Authentication**: Register or log in to access the main features.
+2. **Upload Image**: Click on the upload button to select an image from the gallery or capture a new one.
+3. **Classification**: View the classification result along with the confidence percentage.
+4. **History**: Navigate to the history page to view past classifications.
+
+## Download
+
+[Download the APK](build/app/outputs/flutter-apk/AutiVision-v7.apk)
