@@ -46,7 +46,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 }
 
-
 class HeroLogo extends StatelessWidget {
   const HeroLogo({super.key});
 
