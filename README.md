@@ -74,4 +74,4 @@ Autism Detection App is an open-source Flutter application designed to classify 
 
 ## Download
 
-[Download the APK](build/app/outputs/flutter-apk/AutiVision-v7.apk)
+[Download the APK](https://drive.google.com/uc?export=download&id=1CjwI5Mv4piFVlQ2fqHUA-6acnGTulXz5)
