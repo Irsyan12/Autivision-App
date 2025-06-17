@@ -176,10 +176,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             const SizedBox(height: 20),
             const SignupPrompt(),
-            const SizedBox(height: 20),
-            const DividerWithText(text: 'Atau'),
-            const SizedBox(height: 20),
-            GoogleSignInButton(authProvider: authProvider),
+            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -312,41 +309,3 @@ class DividerWithText extends StatelessWidget {
   }
 }
 
-class GoogleSignInButton extends StatelessWidget {
-  final AuthProvider authProvider;
-
-  const GoogleSignInButton({super.key, required this.authProvider});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: () async {
-        try {
-          await authProvider.signInWithGoogle();
-          if (authProvider.user != null) {
-            Navigator.pushNamed(context, '/main');
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login dengan Google gagal')),
-            );
-          }
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login dengan Google gagal: $e')),
-          );
-        }
-      },
-      icon: SvgPicture.asset('assets/svgs/google_icon.svg', width: 30),
-      label: const Text('Masuk Dengan Google',
-          style: TextStyle(fontWeight: FontWeight.w500)),
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        minimumSize: const Size(double.infinity, 50),
-        side: const BorderSide(color: Colors.black12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-}

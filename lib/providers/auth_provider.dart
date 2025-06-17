@@ -104,55 +104,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        // The user canceled the sign-in
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      _user = userCredential.user;
-
-      if (_user != null) {
-        DocumentSnapshot userDoc =
-            await _firestore.collection('users').doc(_user!.uid).get();
-        if (!userDoc.exists) {
-          // Create new user document in Firestore
-          await _firestore.collection('users').doc(_user!.uid).set({
-            'uid': _user!.uid,
-            'email': _user!.email,
-            'username': _user!.displayName ?? 'User',
-            'profileImageUrl': _user!.photoURL ?? '',
-            'createdAt': Timestamp.now(),
-          });
-          _userData = {
-            'uid': _user!.uid,
-            'email': _user!.email,
-            'username': _user!.displayName ?? 'User',
-            'profileImageUrl': _user!.photoURL ?? '',
-          };
-        } else {
-          _userData = userDoc.data() as Map<String, dynamic>?;
-        }
-      }
-      await _saveLoginStatus();
-      notifyListeners();
-    } catch (e) {
-      // print(e);
-      rethrow; // Throw error to be caught in the UI
-    }
-  }
-
+  
   Future<void> updateProfileImage(File imageFile) async {
     try {
       final ref = FirebaseStorage.instance

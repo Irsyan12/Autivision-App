@@ -337,47 +337,7 @@ class _SignupFormState extends State<SignupForm> {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            const Row(
-              children: [
-                Expanded(
-                  child: Divider(color: Colors.black45),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text('Atau'),
-                ),
-                Expanded(
-                  child: Divider(color: Colors.black45),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () async {
-                await widget.authProvider.signInWithGoogle();
-
-                if (widget.authProvider.user != null) {
-                  Navigator.pushNamed(context, '/main');
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Pendaftaran dengan Google gagal')),
-                  );
-                }
-              },
-              icon: SvgPicture.asset('assets/svgs/google_icon.svg', width: 30),
-              label: const Text('Daftar Dengan Google',
-                  style: TextStyle(fontWeight: FontWeight.w500)),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.white,
-                minimumSize: const Size(double.infinity, 50),
-                side: const BorderSide(color: Colors.black12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -389,7 +349,8 @@ class SignupImagePicker extends StatelessWidget {
   final File? profileImage;
   final Function pickImage;
 
-  const SignupImagePicker({super.key, required this.profileImage, required this.pickImage});
+  const SignupImagePicker(
+      {super.key, required this.profileImage, required this.pickImage});
 
   @override
   Widget build(BuildContext context) {
@@ -401,7 +362,8 @@ class SignupImagePicker extends StatelessWidget {
           backgroundColor: Colors.grey[300],
           backgroundImage: profileImage != null
               ? FileImage(profileImage!)
-              : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
+              : const AssetImage('assets/images/default_avatar.png')
+                  as ImageProvider,
         ),
         Positioned(
           right: 0,

@@ -91,13 +91,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           'Apakah Anda yakin ingin menghapus item yang dipilih?'),
                       actions: [
                         TextButton(
-                          child: const Text('Cancel'),
+                          child: const Text('Batal'),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                         ),
                         TextButton(
-                          child: const Text('Delete'),
+                          child: const Text('Hapus'),
                           onPressed: () {
                             deleteSelectedItems(userId!);
                             Navigator.of(context).pop();
