@@ -8,6 +8,9 @@ import 'profile_screen.dart';
 import '../widgets/buttomNav.dart';
 import '../utils/tflite_helper.dart';
 import '../services/history_service.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:image/image.dart' as img;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainScreen extends StatefulWidget {
   final User? user;
@@ -153,6 +156,25 @@ class _ContentState extends State<Content> {
   bool _loading = false;
   Map<String, double>? _classificationResult;
   final HistoryService _HistoryService = HistoryService();
+  late final FaceDetector _faceDetector;
+
+  @override
+  void initState() {
+    super.initState();
+    _faceDetector = FaceDetector(
+      options: FaceDetectorOptions(
+        enableContours: false,
+        enableClassification: false,
+        enableLandmarks: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _faceDetector.close();
+    super.dispose();
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     var image = await _picker.pickImage(source: source);
@@ -168,35 +190,87 @@ class _ContentState extends State<Content> {
   }
 
   Future<void> _classifyImage(File image) async {
-    final tfliteHelper = TFLiteHelper();
-    Map<String, double> result = await tfliteHelper.classifyImage(image);
-    setState(() {
-      _loading = false;
-      _classificationResult = result;
-    });
+    try {
+      final inputImage = InputImage.fromFile(image);
+      final faces = await _faceDetector.processImage(inputImage);
 
-    if (widget.user != null) {
-      try {
-        String imageUrl =
-            await _HistoryService.uploadImage(image, widget.user!.uid);
+      if (faces.isEmpty) {
+        setState(() {
+          _loading = false;
+          _classificationResult = {}; // kosongkan agar label jadi 'N/A'
+        });
 
-        double confidence = double.parse(
-          (_classificationResult!.values.reduce((a, b) => a > b ? a : b) * 100)
-              .toStringAsFixed(2),
+        Fluttertoast.showToast(
+          msg: "Wajah tidak ditemukan, silakan coba gambar lain.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white,
+          fontSize: 14.0,
         );
-
-        await _HistoryService.addToHistory(
-          imageUrl,
-          getClassificationLabel(),
-          confidence,
-          widget.user!.uid,
-        );
-      } catch (e) {
-        print('Error uploading image and saving to history: $e');
+        return;
       }
+
+      // Crop wajah pertama
+      final imageBytes = await image.readAsBytes();
+      final decodedImage = img.decodeImage(imageBytes);
+      if (decodedImage == null) throw Exception("Gagal decode gambar");
+
+      final face = faces.first;
+      final box = face.boundingBox;
+
+      final cropped = img.copyCrop(
+        decodedImage,
+        x: box.left.toInt().clamp(0, decodedImage.width),
+        y: box.top.toInt().clamp(0, decodedImage.height),
+        width: box.width.toInt().clamp(0, decodedImage.width),
+        height: box.height.toInt().clamp(0, decodedImage.height),
+      );
+
+      final tempDir = await Directory.systemTemp.createTemp();
+      final croppedFile = File('${tempDir.path}/face.png');
+      await croppedFile.writeAsBytes(img.encodePng(cropped));
+
+      // Tampilkan wajah yang telah dipotong
+      setState(() {
+        _image = croppedFile;
+      });
+
+      // Klasifikasi wajah
+      final tfliteHelper = TFLiteHelper();
+      Map<String, double> result =
+          await tfliteHelper.classifyImage(croppedFile);
+
+      setState(() {
+        _loading = false;
+        _classificationResult = result;
+      });
+
+      if (widget.user != null) {
+        try {
+          String imageUrl =
+              await _HistoryService.uploadImage(croppedFile, widget.user!.uid);
+          double confidence =
+              result.values.reduce((a, b) => a > b ? a : b) * 100;
+
+          await _HistoryService.addToHistory(
+            imageUrl,
+            getClassificationLabel(),
+            double.parse(confidence.toStringAsFixed(2)),
+            widget.user!.uid,
+          );
+        } catch (e) {
+          print('Error uploading image and saving to history: $e');
+        }
+      }
+    } catch (e) {
+      setState(() {
+        _loading = false;
+        _classificationResult = {'Error': 1.0};
+      });
+      print("Error during classification: $e");
     }
   }
-
 
   Color getResultColor() {
     if (_classificationResult != null && _classificationResult!.isNotEmpty) {
