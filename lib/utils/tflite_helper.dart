@@ -150,7 +150,7 @@ class TFLiteHelper {
 
   Future<void> loadModel() async {
     try {
-      _interpreter = await Interpreter.fromAsset('assets/asd2.tflite');
+      _interpreter = await Interpreter.fromAsset('assets/asd_model.tflite');
       print('Model loaded successfully');
     } catch (e) {
       print('Failed to load model: $e');
