@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
         '/main': (context) =>
             MainScreen(user: FirebaseAuth.instance.currentUser),
         '/signup': (context) => const SignupScreen(),
+        '/forgotPassword': (context) => const ForgotPasswordScreen(),
         '/onBoarding': (context) => const OnBoardingScreen(),
         '/example': (context) => const ExampleScreen(),
         '/detail': (context) => const DetailHistoryScreen(
@@ -70,7 +71,6 @@ class MyApp extends StatelessWidget {
           }
         },
         '/profile': (context) => const ProfileScreen(),
-        '/forgotPassword': (context) => const ForgotPasswordScreen(),
       },
     );
   }
