@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import '../providers/auth_provider.dart';
@@ -222,7 +221,8 @@ class PasswordField extends StatelessWidget {
   final VoidCallback toggleObscureText;
   final String? errorText;
 
-  const PasswordField({super.key, 
+  const PasswordField({
+    super.key,
     required this.controller,
     required this.obscureText,
     required this.toggleObscureText,
@@ -284,28 +284,3 @@ class SignupPrompt extends StatelessWidget {
     );
   }
 }
-
-class DividerWithText extends StatelessWidget {
-  final String text;
-
-  const DividerWithText({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(
-          child: Divider(color: Colors.black45),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text(text),
-        ),
-        const Expanded(
-          child: Divider(color: Colors.black45),
-        ),
-      ],
-    );
-  }
-}
-

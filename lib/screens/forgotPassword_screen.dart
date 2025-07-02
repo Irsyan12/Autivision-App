@@ -1,3 +1,4 @@
+// ignore_for_file: unused_field, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';

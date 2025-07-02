@@ -13,17 +13,21 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
+    Future<void> _navigateAfterDelay(BuildContext context) async {
+      final stopwatch = Stopwatch()..start();
       bool isLoggedIn = await _checkLoginStatus();
-      Future.delayed(const Duration(seconds: 2), () {
-        if (context.mounted) {
-          if (isLoggedIn) {
-            Navigator.pushReplacementNamed(context, '/main');
-          } else {
-            Navigator.pushReplacementNamed(context, '/onBoarding');
-          }
-        }
-      });
+      await Future.delayed(const Duration(seconds: 2));
+      print("Navigating after ${stopwatch.elapsedMilliseconds}ms");
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(
+          context,
+          isLoggedIn ? '/main' : '/onBoarding',
+        );
+      }
+    }
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _navigateAfterDelay(context);
     });
 
     return Scaffold(

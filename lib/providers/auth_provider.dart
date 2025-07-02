@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -12,7 +11,6 @@ class AuthProvider with ChangeNotifier {
   User? _user;
   String? get userId => _user?.uid;
   Map<String, dynamic>? _userData;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   AuthProvider() {
     _user = _auth.currentUser;
@@ -168,7 +166,6 @@ class AuthProvider with ChangeNotifier {
   Future<void> logout() async {
     try {
       await _auth.signOut();
-      await _googleSignIn.signOut();
       _user = null;
       _userData = null;
 
