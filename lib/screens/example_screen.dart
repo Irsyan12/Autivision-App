@@ -1,5 +1,6 @@
 import 'package:autivision_v2/widgets/customButton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ExampleScreen extends StatefulWidget {
   const ExampleScreen({super.key});
@@ -11,7 +12,7 @@ class ExampleScreen extends StatefulWidget {
 class _ExampleScreenState extends State<ExampleScreen> {
   // Dummy URL for demonstration, replace with your actual Firebase Storage URL
   String imageUrl =
-      'https://firebasestorage.googleapis.com/v0/b/autivision-c1daf.appspot.com/o/example_image.jpg?alt=media';
+      dotenv.env['EXAMPLE_IMAGE_URL']!;
 
   bool _isLoading = true;
 
